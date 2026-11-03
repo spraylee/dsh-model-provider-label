@@ -7,11 +7,11 @@
 ## 效果
 
 ```
-ᵀᴺ ᔆʷⁱᵗᶜʰ DeepSeek-V4.1-Flash  High ⌄
+TT Switch DeepSeek-V4.1-Flash  High ⌄
 ```
 
-供应商以 9px 行内**上标**（`vertical-align: super`）贴在模型名左前方。
-模型名与推理强度（`High`）保持同一基线，因为上标不改变行盒高度。
+供应商是 10px 的同排小字，放在模型名前、颜色用 caption 灰。
+模型名与推理强度（`High`）保持同一基线，因为供应商没有改变行盒高度。
 
 收起态按钮、菜单根行（「模型」的当前值）都生效。
 模型列表项本身就是按供应商分组的，所以 `placement: 'option'` 只输出模型名，不重复贴标签。
@@ -19,11 +19,15 @@
 供应商短标签取 `displayName` 里 `·` 之后的片段：`腾讯内网 · TT Switch` → `TT Switch`。
 完整名称放在 `title` 悬浮提示里。
 
-### 为什么不能用绝对定位
+### 布局约束（踩过的坑）
 
 宿主 `ModelSelect` 把本槽包在 `.triggerLabel` 里，该元素带
-`overflow: hidden` + `line-height: 20px`。任何 `top: 负值` 的内容都会被裁掉
-（实测 `position:absolute; top:-9px` 完全不可见），所以供应商必须留在行盒内部。
+`overflow: hidden` + `line-height: 20px`。所以：
+
+- **绝对定位会被裁掉** —— `position:absolute; top:-9px` 实测完全不可见。
+- **不能换行** —— 两行竖排会把标签块撑到 2 倍行高，宿主渲染的 `High` 就与模型名错位。
+
+结论：供应商只能作为**同一行内的小字**存在，这是唯一既不越界、又不破坏对齐的形态。
 
 ## 安装
 
