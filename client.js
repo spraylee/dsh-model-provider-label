@@ -74,6 +74,9 @@ window.__ModuleLoader__.load({
         ctx.slots.inject('conversation.input.model.label', () => ctx.slots.register({
           name: 'conversation.input.model.label',
           locale: NS,
+          // single 槽已有内置占用者（1017 发布徽标，priority 0）。实测 priority 数值
+          // 小者胜出，因此用 -10 取代它拿到渲染权。
+          priority: -10,
         }, ProviderLabel))
       },
     }
