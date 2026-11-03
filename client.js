@@ -35,28 +35,24 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * 竖向两行：供应商贴左上、模型名贴左下。
-     * `alignSelf: 'stretch'` 撑满 28px 触发器高度，`space-between` 把两行分到上下两端，
-     * 这样左列是「上=供应商 / 下=模型名」的两行结构。
+     * 模型名保持原样占据正常流，供应商用绝对定位浮到它的左上角。
      *
-     * 注意：推理强度（High）由宿主 `ModelSelect` 自己渲染，是本槽之后的兄弟节点，
-     * 垂直位置是宿主写死的居中，插件无法把它移到右上角。
+     * 关键收益：标签块的盒模型高度仍等于模型名那一行（line-height 20px），
+     * 与宿主紧接着渲染的推理强度（`High`，同样垂直居中）保持同一基线，
+     * 不会因为多出一行文字而被顶得上移。
      */
-    const stackStyle = {
-      display: 'inline-flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      alignSelf: 'stretch',
+    const wrapStyle = {
+      position: 'relative',
+      display: 'inline-block',
       minWidth: 0,
       maxWidth: '100%',
-      paddingTop: 2,
-      paddingBottom: 2,
-      boxSizing: 'border-box',
     }
 
-    /** 供应商：左上角小字。 */
+    /** 供应商：绝对定位到模型名左上角，脱离文档流不占高度。 */
     const providerStyle = {
+      position: 'absolute',
+      left: 0,
+      top: '-9px',
       fontSize: 9,
       lineHeight: '9px',
       letterSpacing: '0.02em',
@@ -65,12 +61,11 @@ window.__ModuleLoader__.load({
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
+      pointerEvents: 'none',
     }
 
-    /** 模型名：12px/15px，两行合计 24px + 4px padding = 28px，正好等于触发器高度。 */
+    /** 模型名：完全沿用宿主字号与行高，保证与 `High` 基线一致。 */
     const modelStyle = {
-      fontSize: 12,
-      lineHeight: '15px',
       maxWidth: '100%',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -78,12 +73,12 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * 模型标签槽：供应商小字放左上角，模型名在其下方。
+     * 模型标签槽：供应商小字绝对定位到模型名左上角，模型名本身留在正常流里。
      * `option` 是被供应商分组的列表项，重复展示没有必要，只输出模型名。
      */
     function ProviderLabel({ provider, model, placement, t }) {
       if (placement === 'option') return h('span', null, model.name)
-      return h('span', { style: stackStyle },
+      return h('span', { style: wrapStyle },
         h('span', {
           key: 'provider',
           style: providerStyle,
