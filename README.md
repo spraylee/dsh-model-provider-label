@@ -7,18 +7,23 @@
 ## 效果
 
 ```
-TT SWITCH                    ← 9px，绝对定位浮在模型名左上角
-DeepSeek-V4.1-Flash  High ⌄  ← 模型名与推理强度保持同一基线
+ᵀᴺ ᔆʷⁱᵗᶜʰ DeepSeek-V4.1-Flash  High ⌄
 ```
 
-供应商小字用 `position: absolute` 浮到模型名左上角，**不占文档流高度**，
-所以模型名那一行的高度和基线完全不变，宿主渲染的推理强度（`High`）仍然与模型名垂直对齐。
+供应商以 9px 行内**上标**（`vertical-align: super`）贴在模型名左前方。
+模型名与推理强度（`High`）保持同一基线，因为上标不改变行盒高度。
 
 收起态按钮、菜单根行（「模型」的当前值）都生效。
 模型列表项本身就是按供应商分组的，所以 `placement: 'option'` 只输出模型名，不重复贴标签。
 
 供应商短标签取 `displayName` 里 `·` 之后的片段：`腾讯内网 · TT Switch` → `TT Switch`。
-宽度超出省略；完整名称放在 `title` 悬浮提示里。
+完整名称放在 `title` 悬浮提示里。
+
+### 为什么不能用绝对定位
+
+宿主 `ModelSelect` 把本槽包在 `.triggerLabel` 里，该元素带
+`overflow: hidden` + `line-height: 20px`。任何 `top: 负值` 的内容都会被裁掉
+（实测 `position:absolute; top:-9px` 完全不可见），所以供应商必须留在行盒内部。
 
 ## 安装
 
