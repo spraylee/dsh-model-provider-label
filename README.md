@@ -54,14 +54,22 @@ plugin_manager({ action: "remove_bundle", target: "dsh-model-provider-label" })
 ctx.slots.inject('conversation.input.model.label', () => ctx.slots.register({
   name: 'conversation.input.model.label',
   locale: 'model-provider-label',
+  priority: -10,
 }, ProviderLabel))
 ```
 
 组件收到的 props：`provider: { id, name }`、`model`（目录条目）、`placement: 'trigger' | 'menu' | 'option'`、`selected`。
 
+### 为什么要 `priority: -10`
+
+`conversation.input.model.label` 是 `single` 槽，已有内置占用者
+`@deepseek-ai/dsh-client-ui-deepseek-model-label-1017`（priority 0）。
+实测 **priority 数值小者胜出**（`Slots.listSubTree` 里显示 `active: true` 的那个 occupant），
+所以用 `-10` 才能拿到渲染权；用正数会被内置徽标挡住。
+
 ## 已知限制
 
-- 该槽是 `single` 类型，且已有一个内置占用者（`@deepseek-ai/dsh-client-ui-deepseek-model-label-1017` 的发布徽标）。两者同时注册时的叠加行为取决于宿主，实测以页面显示为准。
+- 抢占后内置的 1017 发布徽标不再显示（它是同一个 single 槽的另一位占用者）。
 - 收起态在窄窗口下会被宿主换成纯图标（`--dsh-composer-model-text-display: none`），此时标签也不显示。
 - 只影响显示，不改变路由；供应商和模型的实际选择仍由宿主的模型选择器决定。
 
