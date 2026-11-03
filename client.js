@@ -34,36 +34,53 @@ window.__ModuleLoader__.load({
       return short === '' ? provider.id : short
     }
 
-    const tagStyle = {
-      display: 'inline-block',
-      marginLeft: 6,
-      padding: '0 4px',
-      border: '1px solid var(--dsw-alias-border-l1, currentColor)',
-      borderRadius: 4,
-      fontSize: 11,
-      lineHeight: '16px',
+    /** 竖向两行：供应商在上，模型名在下，整体左上对齐。 */
+    const stackStyle = {
+      display: 'inline-flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      lineHeight: 1,
+      minWidth: 0,
+      maxWidth: '100%',
+      verticalAlign: 'middle',
+    }
+
+    /** 供应商：左上角小字。 */
+    const providerStyle = {
+      fontSize: 9,
+      lineHeight: '10px',
+      letterSpacing: '0.02em',
       color: 'var(--dsw-alias-label-caption, var(--dsw-alias-label-secondary, inherit))',
-      maxWidth: '9em',
+      maxWidth: '100%',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      verticalAlign: 'baseline',
+    }
+
+    /** 模型名：沿用宿主字号（13px），只压低行高以塞进 28px 高的触发器。 */
+    const modelStyle = {
+      lineHeight: '16px',
+      maxWidth: '100%',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
     }
 
     /**
-     * 模型标签槽：在模型名后补一个供应商标签。
+     * 模型标签槽：供应商小字放左上角，模型名在其下方。
      * `option` 是被供应商分组的列表项，重复展示没有必要，只输出模型名。
      */
     function ProviderLabel({ provider, model, placement, t }) {
       if (placement === 'option') return h('span', null, model.name)
-      return h('span', null,
-        h('span', null, model.name),
+      return h('span', { style: stackStyle },
         h('span', {
           key: 'provider',
-          style: tagStyle,
+          style: providerStyle,
           title: provider.name || provider.id,
           'data-provider-id': provider.id,
         }, shortName(provider, t)),
+        h('span', { key: 'model', style: modelStyle }, model.name),
       )
     }
 
