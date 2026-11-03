@@ -34,22 +34,31 @@ window.__ModuleLoader__.load({
       return short === '' ? provider.id : short
     }
 
-    /** 竖向两行：供应商在上，模型名在下，整体左上对齐。 */
+    /**
+     * 竖向两行：供应商贴左上、模型名贴左下。
+     * `alignSelf: 'stretch'` 撑满 28px 触发器高度，`space-between` 把两行分到上下两端，
+     * 这样左列是「上=供应商 / 下=模型名」的两行结构。
+     *
+     * 注意：推理强度（High）由宿主 `ModelSelect` 自己渲染，是本槽之后的兄弟节点，
+     * 垂直位置是宿主写死的居中，插件无法把它移到右上角。
+     */
     const stackStyle = {
       display: 'inline-flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
-      justifyContent: 'center',
-      lineHeight: 1,
+      justifyContent: 'space-between',
+      alignSelf: 'stretch',
       minWidth: 0,
       maxWidth: '100%',
-      verticalAlign: 'middle',
+      paddingTop: 2,
+      paddingBottom: 2,
+      boxSizing: 'border-box',
     }
 
     /** 供应商：左上角小字。 */
     const providerStyle = {
       fontSize: 9,
-      lineHeight: '10px',
+      lineHeight: '9px',
       letterSpacing: '0.02em',
       color: 'var(--dsw-alias-label-caption, var(--dsw-alias-label-secondary, inherit))',
       maxWidth: '100%',
@@ -58,9 +67,10 @@ window.__ModuleLoader__.load({
       whiteSpace: 'nowrap',
     }
 
-    /** 模型名：沿用宿主字号（13px），只压低行高以塞进 28px 高的触发器。 */
+    /** 模型名：12px/15px，两行合计 24px + 4px padding = 28px，正好等于触发器高度。 */
     const modelStyle = {
-      lineHeight: '16px',
+      fontSize: 12,
+      lineHeight: '15px',
       maxWidth: '100%',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
