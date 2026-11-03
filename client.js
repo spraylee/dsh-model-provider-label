@@ -35,45 +35,38 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * 模型名保持原样占据正常流，供应商用绝对定位浮到它的左上角。
+     * 单行内联布局：供应商作为「上标」放在模型名左前方。
      *
-     * 关键收益：标签块的盒模型高度仍等于模型名那一行（line-height 20px），
-     * 与宿主紧接着渲染的推理强度（`High`，同样垂直居中）保持同一基线，
-     * 不会因为多出一行文字而被顶得上移。
+     * 为什么不用绝对定位：宿主把本槽包在 `.triggerLabel` 里，该元素带
+     * `overflow: hidden` + `line-height: 20px`。任何 `top: 负值` 的内容都会被裁掉，
+     * 实测 `top: -9px` 完全不可见。所以供应商必须留在行盒内部。
+     *
+     * 上标（`vertical-align: super` + 9px）只改变字形位置，不改变行盒高度，
+     * 因此标签块高度仍等于 20px，宿主渲染的推理强度（`High`）与之完美对齐。
      */
     const wrapStyle = {
-      position: 'relative',
-      display: 'inline-block',
+      display: 'inline',
       minWidth: 0,
-      maxWidth: '100%',
     }
 
-    /** 供应商：绝对定位到模型名左上角，脱离文档流不占高度。 */
+    /** 供应商：行内上标小字，贴在模型名左上方。 */
     const providerStyle = {
-      position: 'absolute',
-      left: 0,
-      top: '-9px',
       fontSize: 9,
       lineHeight: '9px',
       letterSpacing: '0.02em',
+      verticalAlign: 'super',
+      marginRight: 4,
       color: 'var(--dsw-alias-label-caption, var(--dsw-alias-label-secondary, inherit))',
-      maxWidth: '100%',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      pointerEvents: 'none',
     }
 
-    /** 模型名：完全沿用宿主字号与行高，保证与 `High` 基线一致。 */
+    /** 模型名：沿用宿主字号与行高。 */
     const modelStyle = {
-      maxWidth: '100%',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
     }
 
     /**
-     * 模型标签槽：供应商小字绝对定位到模型名左上角，模型名本身留在正常流里。
+     * 模型标签槽：供应商作为行内上标在模型名左前方。
      * `option` 是被供应商分组的列表项，重复展示没有必要，只输出模型名。
      */
     function ProviderLabel({ provider, model, placement, t }) {
