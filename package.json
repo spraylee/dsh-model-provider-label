@@ -1,0 +1,53 @@
+{
+  "name": "dsh-model-provider-label",
+  "version": "0.1.0",
+  "description": "Show which provider a model comes from inside the DeepSeek Harness model selector (收起态/菜单/列表三处).",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "spraylee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spraylee/dsh-model-provider-label.git"
+  },
+  "homepage": "https://github.com/spraylee/dsh-model-provider-label",
+  "bugs": {
+    "url": "https://github.com/spraylee/dsh-model-provider-label/issues"
+  },
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "model",
+    "provider"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-model-selection"
+      ]
+    }
+  }
+}

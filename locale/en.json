@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Model Provider Label",
+    "description": "Show which provider the current model comes from, next to the model name in the composer."
+  }
+}

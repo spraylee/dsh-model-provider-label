@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Model Provider Label">
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#1f2430"/>
+  <rect x="11" y="22" width="26" height="7" rx="3.5" fill="#e6e9ef"/>
+  <rect x="11" y="35" width="16" height="7" rx="3.5" fill="#7f8794"/>
+  <rect x="31" y="35" width="22" height="7" rx="3.5" fill="#4d8dfd"/>
+  <circle cx="47" cy="25.5" r="5" fill="#4d8dfd"/>
+</svg>
