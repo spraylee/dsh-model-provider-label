@@ -1,6 +1,6 @@
 {
   "name": "dsh-model-provider-label",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Show which provider a model comes from inside the DeepSeek Harness model selector (收起态/菜单/列表三处).",
   "type": "module",
   "main": "index.js",

@@ -23,7 +23,7 @@ window.__ModuleLoader__.load({
 
     /**
      * 把 provider 显示名压缩成标签长度。
-     * 目录里常见写法是「腾讯内网 · TT Switch」，取 `·` 之后的部分。
+     * displayName 含 `·` 时取最后一段，如「My Relay · OpenRouter」→「OpenRouter」。
      */
     function shortName(provider, t) {
       const known = KNOWN[provider.id]

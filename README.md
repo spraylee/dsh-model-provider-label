@@ -2,12 +2,13 @@
 
 在 DeepSeek Harness 输入框的模型选择器里，**把当前模型来自哪个供应商显示出来**。
 
-收起态只会显示 `DeepSeek-V4.1-Flash` 时，如果两个 provider 都提供了同名模型（例如 `tencent-tokenhub` 和 `tt-switch-tencent-intranet` 都叫 `DeepSeek-V4.1-Flash`），你就无法判断这条请求走的是哪条链路。这个插件在模型名后补一个供应商短标签。
+收起态只会显示 `DeepSeek-V4.1-Flash` 时，如果两个 provider 都提供了同名模型（例如 DeepSeek 官方接口和 Tencent TokenHub 都叫 `DeepSeek-V4.1-Flash`），你就无法判断这条请求走的是哪条链路。这个插件在模型名前补一个供应商短标签。
 
 ## 效果
 
 ```
-TT Switch DeepSeek-V4.1-Flash  High ⌄
+DeepSeek 官方 DeepSeek-V4.1-Flash  High ⌄
+Tencent TokenHub DeepSeek-V4.1-Flash  High ⌄
 ```
 
 供应商是 10px 的同排小字，放在模型名前、颜色用 caption 灰。
@@ -16,7 +17,10 @@ TT Switch DeepSeek-V4.1-Flash  High ⌄
 收起态按钮、菜单根行（「模型」的当前值）都生效。
 模型列表项本身就是按供应商分组的，所以 `placement: 'option'` 只输出模型名，不重复贴标签。
 
-供应商短标签取 `displayName` 里 `·` 之后的片段：`腾讯内网 · TT Switch` → `TT Switch`。
+供应商短标签规则：
+
+- 内置的 DeepSeek 账号 / DeepSeek 官方接口使用本地化短名（`DeepSeek 账号`、`DeepSeek 官方`）。
+- 其他 provider 用它的 `displayName`；若含 `·`，取最后一段：`My Relay · OpenRouter` → `OpenRouter`。
 完整名称放在 `title` 悬浮提示里。
 
 ### 布局约束（踩过的坑）
