@@ -35,28 +35,26 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * 单行内联布局：供应商作为「上标」放在模型名左前方。
+     * 单行内联布局：供应商作为小一号的同排文字放在模型名前。
      *
      * 为什么不用绝对定位：宿主把本槽包在 `.triggerLabel` 里，该元素带
      * `overflow: hidden` + `line-height: 20px`。任何 `top: 负值` 的内容都会被裁掉，
-     * 实测 `top: -9px` 完全不可见。所以供应商必须留在行盒内部。
+     * 实测 `position:absolute; top:-9px` 完全不可见。所以供应商必须留在行盒内部。
      *
-     * 上标（`vertical-align: super` + 9px）只改变字形位置，不改变行盒高度，
-     * 因此标签块高度仍等于 20px，宿主渲染的推理强度（`High`）与之完美对齐。
+     * 同排（不用 `vertical-align: super`）意味着不改变行盒高度，
+     * 宿主渲染的推理强度（`High`）与模型名保持同一基线。
      */
     const wrapStyle = {
       display: 'inline',
       minWidth: 0,
     }
 
-    /** 供应商：行内上标小字，贴在模型名左上方。 */
+    /** 供应商：10px 同排小字，正常基线。 */
     const providerStyle = {
-      fontSize: 9,
-      lineHeight: '9px',
+      fontSize: 10,
       letterSpacing: '0.02em',
-      verticalAlign: 'super',
-      marginRight: 4,
       color: 'var(--dsw-alias-label-caption, var(--dsw-alias-label-secondary, inherit))',
+      marginRight: 5,
       whiteSpace: 'nowrap',
     }
 
@@ -66,7 +64,7 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * 模型标签槽：供应商作为行内上标在模型名左前方。
+     * 模型标签槽：供应商小字在模型名前，同一行。
      * `option` 是被供应商分组的列表项，重复展示没有必要，只输出模型名。
      */
     function ProviderLabel({ provider, model, placement, t }) {
